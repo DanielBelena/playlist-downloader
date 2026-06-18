@@ -130,16 +130,24 @@ async function resolveDownloadUrl(cobaltUrl, cobaltApiKey, videoUrl) {
       url: videoUrl,
       downloadMode: 'audio',
       audioFormat: 'mp3',
-      alwaysProxy: true,
       filenameStyle: 'basic'
     })
   });
 
-  if (!res.ok) {
-    throw new Error(`Cobalt respondió con estado HTTP ${res.status}`);
+  let data = null;
+  try {
+    data = await res.json();
+  } catch (e) {
+    // la respuesta no era JSON válido
   }
 
-  const data = await res.json();
+  if (!res.ok) {
+    const code = data && data.error && data.error.code;
+    throw new Error(code || `Cobalt respondió con estado HTTP ${res.status}`);
+  }
+  if (!data) {
+    throw new Error('Cobalt devolvió una respuesta vacía o no válida');
+  }
 
   if (data.status === 'error') {
     throw new Error((data.error && data.error.code) || 'Error desconocido de Cobalt');
