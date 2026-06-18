@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playlist → MP3</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="app__header">
+      <h1>Playlist <span class="arrow">→</span> MP3</h1>
+      <p class="subtitle">Pega la URL de tu playlist, elige una carpeta, y descarga el audio de cada vídeo como mp3.</p>
+      <button id="toggleSettings" class="btn btn--ghost btn--small" type="button">⚙ Configuración</button>
+    </header>
+
+    <section id="settingsPanel" class="panel panel--settings hidden">
+      <h2>Configuración</h2>
+
+      <label class="field">
+        <span>Clave de la API de YouTube Data v3</span>
+        <input type="password" id="youtubeApiKey" placeholder="AIza…" autocomplete="off">
+      </label>
+
+      <label class="field">
+        <span>URL de tu instancia de Cobalt</span>
+        <input type="text" id="cobaltUrl" placeholder="https://tu-instancia.up.railway.app" autocomplete="off">
+      </label>
+
+      <label class="field">
+        <span>Clave de API de tu instancia de Cobalt <em>(opcional, si la protegiste)</em></span>
+        <input type="password" id="cobaltApiKey" placeholder="aaaaaaaa-bbbb-…" autocomplete="off">
+      </label>
+
+      <label class="field field--checkbox">
+        <input type="checkbox" id="numberFiles" checked>
+        <span>Numerar archivos según el orden de la playlist</span>
+      </label>
+
+      <div class="field-row">
+        <button id="saveSettings" class="btn btn--primary" type="button">Guardar</button>
+        <span id="settingsSaved" class="status status--ok hidden">Guardado ✓</span>
+      </div>
+
+      <p class="hint">Estos datos se guardan solo en este navegador (localStorage). Nunca se suben al repositorio ni se envían a ningún sitio que no sea tu propia instancia de Cobalt y la API de YouTube.</p>
+    </section>
+
+    <section class="panel">
+      <label class="field" for="playlistUrl">
+        <span>URL de la playlist de YouTube</span>
+      </label>
+      <div class="input-row">
+        <input type="text" id="playlistUrl" placeholder="https://www.youtube.com/playlist?list=…">
+        <button id="loadPlaylist" class="btn btn--primary" type="button">Cargar</button>
+      </div>
+      <p id="playlistStatus" class="status"></p>
+    </section>
+
+    <section id="trackListSection" class="panel hidden">
+      <div class="panel__header">
+        <h2 id="trackCount">0 vídeos</h2>
+        <div class="actions">
+          <button id="selectAll" class="btn btn--ghost btn--small" type="button">Todos</button>
+          <button id="selectNone" class="btn btn--ghost btn--small" type="button">Ninguno</button>
+        </div>
+      </div>
+
+      <ol id="trackList" class="track-list"></ol>
+
+      <div class="panel__footer">
+        <button id="chooseFolderBtn" class="btn btn--primary btn--large" type="button">Elegir carpeta y descargar</button>
+        <button id="stopBtn" class="btn btn--danger hidden" type="button">Detener</button>
+      </div>
+
+      <div id="progressWrap" class="progress-wrap hidden">
+        <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+        <p id="progressLabel" class="status"></p>
+      </div>
+    </section>
+
+    <p id="compatWarning" class="warning hidden">
+      ⚠ Tu navegador no soporta elegir carpetas de descarga (File System Access API). Abre esta página en Chrome o Edge de escritorio.
+    </p>
+
+    <footer class="app__footer">
+      <p>Úsalo solo con playlists propias o contenido que tengas derecho a descargar.</p>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
