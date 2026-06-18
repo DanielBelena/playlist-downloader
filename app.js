@@ -28,10 +28,19 @@ function loadSettingsIntoForm() {
   document.getElementById('numberFiles').checked = s.numberFiles !== false;
 }
 
+function normalizeCobaltUrl(raw) {
+  let url = raw.trim().replace(/\/+$/, '');
+  if (!url) return url;
+  if (!/^https?:\/\//i.test(url)) {
+    url = `https://${url}`; // si falta el esquema, asumimos https
+  }
+  return url;
+}
+
 function readSettingsFromForm() {
   return {
     youtubeApiKey: document.getElementById('youtubeApiKey').value.trim(),
-    cobaltUrl: document.getElementById('cobaltUrl').value.trim().replace(/\/+$/, ''),
+    cobaltUrl: normalizeCobaltUrl(document.getElementById('cobaltUrl').value),
     cobaltApiKey: document.getElementById('cobaltApiKey').value.trim(),
     numberFiles: document.getElementById('numberFiles').checked
   };
